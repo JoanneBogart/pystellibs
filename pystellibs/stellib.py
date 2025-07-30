@@ -239,7 +239,7 @@ class Stellib(object):
 
         # check boundary conditions, keep the data but do not compute the sed
         # if outside
-        bound = self.points_inside(np.array([logT, logg]).T, 
+        bound = self.points_inside(np.array([logT, logg]).T,
                 dlogT=dlogT, dlogg=dlogg)
         if np.ndim(_values) == 1:
             specs = np.empty(ndata, dtype=float)
@@ -291,14 +291,14 @@ class Stellib(object):
 
         # check boundary conditions, keep the data but do not compute the sed
         # if outside
-        bound = self.points_inside(np.array([logT, logg]).T, 
+        bound = self.points_inside(np.array([logT, logg]).T,
                 dlogT=dlogT, dlogg=dlogg)
         specs = np.empty((ndata, len(self._wavelength)), dtype=float)
         specs[~bound] = np.full(len(self.wavelength), null_value)
 
         logZ = np.log10(Z)
         aps = np.array([logT, logg, logZ]).T
-        s = self.interpolator.interp(aps[bound]) * weights[bound, None]
+        s = self.interpolator.interp(aps[bound]) * np.array(weights)[bound, None]
         specs[bound] = s
 
         l0 = self.wavelength
@@ -420,7 +420,7 @@ class AtmosphereLib(Stellib):
     of the input libraries.
     """
     def get_weights(self, logT, logg, logL, weights=None):
-        """ Returns the proper weights for the interpolation 
+        """ Returns the proper weights for the interpolation
         Stellar atmospheres are normalized to Radius = 1
 
         Parameters
@@ -786,7 +786,7 @@ class CompositeStellib(Stellib):
         osl_index = self.which_osl(list(zip(logT, logg)), dlogT=dlogT, dlogg=dlogg)
 
         # group calculations per library
-        groups = [(osl_i, [k[0] for k in grp]) 
+        groups = [(osl_i, [k[0] for k in grp])
                   for osl_i, grp in groupby(enumerate(osl_index), lambda x:x[1])]
 
         # Do the actual interpolation, avoiding exptrapolations
@@ -798,7 +798,7 @@ class CompositeStellib(Stellib):
                 _osl = self._olist[osl_i - 1]
                 lambdas, specs = _osl.generate_individual_spectra(stars[ind])
                 spectra[ind] = self.reinterpolate_spectra(
-                        _drop_units(lambdas), 
+                        _drop_units(lambdas),
                         _drop_units(specs),
                         bounds_error=False,
                         fill_value=0.,
@@ -846,7 +846,7 @@ class CompositeStellib(Stellib):
         osl_index = self.which_osl(list(zip(logT, logg)), dlogT=dlogT, dlogg=dlogg)
 
         # group calculations per library
-        groups = [(osl_i, [k[0] for k in grp]) 
+        groups = [(osl_i, [k[0] for k in grp])
                   for osl_i, grp in groupby(enumerate(osl_index), lambda x:x[1])]
 
         # Do the actual interpolation, avoiding exptrapolations
