@@ -30,7 +30,7 @@ try:
 except ImportError:
     from collections import Iterable
 
-from pkg_resources import resource_filename
+from importlib import resources
 
 from io import BytesIO
 from numbers import Number
@@ -463,9 +463,8 @@ class UnitRegistry(object):
     _SUFFIXES = AliasDict({'': None, 's': ''})
 
     # Location of default file
-    # _DEFAULT_FILENAME = os.path.join(os.path.dirname(__file__), 'default_en.txt')
-    _DEFAULT_FILENAME = resource_filename('pystellibs', 
-                                os.path.join('ezunits','default_en.txt'))
+    resdir = resources.files('pystellibs.ezunits')
+    _DEFAULT_FILENAME = os.path.join(resdir, 'default_en.txt')
 
     def __init__(self, filename='', force_ndarray=False):
         self.Quantity = _build_quantity_class(self, force_ndarray)
