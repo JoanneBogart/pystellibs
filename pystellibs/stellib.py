@@ -337,7 +337,7 @@ class Stellib(object):
 
         .. math::
 
-                R ^ 2 = L / ( 4 \pi \sigma T ^ 4 ),
+                R ^ 2 = L / ( 4 \\pi \\sigma T ^ 4 ),
 
         with:
 
